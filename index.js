@@ -40,6 +40,12 @@ var show = function (element, feedback) {
     element.html(feedback);
 }
 
+var getPlayerPosition = function (tableContainer, otherPlayerPosition) {
+  var player1Sea = document.getElementById(tableContainer)
+  var positionId = "#" + otherPlayerPosition;
+  return $(player1Sea.querySelectorAll(positionId))
+}
+
 $(document).ready(function () {
     var battleshipFB = new Firebase('https://fb-chat-try.firebaseio.com/');
     battleshipFB.remove()
@@ -50,8 +56,14 @@ $(document).ready(function () {
     // Generate a sea
     $('#u1tableContainer').html(generateTable("U1"))
 
+    // User 2 sea
+    var opponentPlayerSea = generateTable("U2")
+    $("#u2tableContainer").html(opponentPlayerSea)
+
+
     // Added new player
     var player = new Player(generateSea(), shipsPosition);
+    var opponent = new Player(opponentPlayerSea, ["A1", "A2", "A3"]);
 
     $("#position").keypress(function (e) {
         var ENTER = 13;
@@ -67,15 +79,20 @@ $(document).ready(function () {
     battleshipFB.on('child_added', function (snapshot) {
       //GET DATA
       var data = snapshot.val();
-      var username = data.name || "anonymous";
+      var username = data.name;
       var otherPlayerPosition = data.position;
 
       //CREATE ELEMENTS MESSAGE & SANITIZE TEXT
-
       if (username != nameField.val()) {
-        var onInputFeedback = player.onInput(otherPlayerPosition);
+        var onInputFeedback = opponent.onInput(otherPlayerPosition);
         if(onInputFeedback != "Sunk") {
-          show($("#" + otherPlayerPosition), onInputFeedback)
+          show(getPlayerPosition("u1tableContainer", otherPlayerPosition), onInputFeedback)
+        }
+      }
+      else {
+        var onInputFeedback = opponent.onInput(otherPlayerPosition);
+        if(onInputFeedback != "Sunk") {
+          show(getPlayerPosition("u2tableContainer", otherPlayerPosition), onInputFeedback)
         }
       }
     });
