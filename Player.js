@@ -24,5 +24,8 @@ Player.prototype = {
     markPosition : function (position) {
         var index = this.ship.indexOf(position);
         this.ship.splice(index, 1)
+    },
+    isAllShipSunk: function () {
+      return this.ship.length == 0;
     }
 }
