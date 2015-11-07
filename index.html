@@ -2,12 +2,9 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="./index.css">
-    <script src = "./jquery-1.11.3.min.js"></script>
-    <!--libreby files-->
-    <script src = "./Player.js"></script>
-
-    <!--main files-->
-
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+    <script src="./Player.js"></script>
     <script src = "./index.js"></script>
 </head>
 
@@ -15,28 +12,38 @@
 
 <style>
 
-    .mytable {
-        border : 1px solid black;
-        height: 50%;
-        width: 40%;
-    }
+.mytable {
+  border : 1px solid black;
+  height: 50%;
+  width: 40%;
+}
 
-    .row {
-        border : 1px solid black;
-        height: 10%;
-        width: 10%;
-    }
-    .column{
-        border : 1px solid black;
-        width: 10%;
-        height: 10%;
-    }
+.row {
+  border : 1px solid black;
+  height: 10%;
+  width: 10%;
+}
+.column{
+  border : 1px solid black;
+  width: 10%;
+  height: 10%;
+}
+
+#u1tableContainer {
+  margin-bottom: 10px;
+}
+
+input {
+  border: 1px solid black;
+  margin-left: 50%;
+
+  </audio>
+}
 </style>
+<input type= "text" id="username" placeholder="User Name">
+<input type= "text" id="position" placeholder="A1">
 <div id = "u1tableContainer"></div>
 <div id = "u2tableContainer"></div>
-<input type= "text" id="position">
-
-
 
 </body>
 </html>

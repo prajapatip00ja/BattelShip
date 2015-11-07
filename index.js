@@ -1,4 +1,3 @@
-var sea = ["A1"];
 var shipsPosition = ["B1","B2","B3"];
 
 
@@ -16,26 +15,6 @@ var generateSea = function(){
     }
     return sea;
 }
-
-var player1 = new Player(generateSea(), shipsPosition);
-
-
-$(document).ready(function () {
-    $('#u1tableContainer').html(generateTable("U1"))
-    $('#u2tableContainer').html(generateTable("U2"))
-    $("#position").keypress(function (e) {
-        var ENTER = 13;
-        if(e.keyCode == ENTER) {
-
-            var enteredPosition = $("#position").val()
-            if(isHit(enteredPosition)) {
-                showHit($(enteredPosition));
-            }
-
-        }
-    })
-});
-
 
 var generateTable = function(userId){
     var table = "<table class='mytable' id=" + userId + ">";
@@ -57,17 +36,48 @@ var generateTable = function(userId){
     return table;
 }
 
-
-var position = "B1";
-
-var showHit = function (element) {
-    element.html("Hit");
+var show = function (element, feedback) {
+    element.html(feedback);
 }
 
-var isHit = function(position ){
-    return shipsPosition.indexOf(position)>=0
-}
+$(document).ready(function () {
+    var battleshipFB = new Firebase('https://fb-chat-try.firebaseio.com/');
+    battleshipFB.remove()
 
+    var position = $("#position");
+    var nameField = $("#username");
 
+    // Generate a sea
+    $('#u1tableContainer').html(generateTable("U1"))
 
-console.log(generateTable())
+    // Added new player
+    var player = new Player(generateSea(), shipsPosition);
+
+    $("#position").keypress(function (e) {
+        var ENTER = 13;
+        if(e.keyCode == ENTER) {
+            var userName = nameField.val()
+            var enteredPosition = position.val()
+            //SAVE DATA TO FIREBASE AND EMPTY FIELD
+            battleshipFB.push({name: userName, position: enteredPosition});
+            position.val('');
+        }
+    });
+
+    battleshipFB.on('child_added', function (snapshot) {
+      //GET DATA
+      var data = snapshot.val();
+      var username = data.name || "anonymous";
+      var otherPlayerPosition = data.position;
+
+      //CREATE ELEMENTS MESSAGE & SANITIZE TEXT
+
+      if (username != nameField.val()) {
+        var onInputFeedback = player.onInput(otherPlayerPosition);
+        if(onInputFeedback != "Sunk") {
+          show($("#" + otherPlayerPosition), onInputFeedback)
+        }
+      }
+    });
+
+});
