@@ -44,11 +44,11 @@ $(document).ready(function () {
     var nameField = $("#username");
 
     // Player 1 Sea
-    $('#u1tableContainer').html(generateTable("U1"))
+    $('#playerTableContainer').html(generateTable("U1"))
 
     // Player 2 sea
     var opponentPlayerSea = generateTable("U2")
-    $("#u2tableContainer").html(opponentPlayerSea)
+    $("#opponenTableContainer").html(opponentPlayerSea)
 
     // Added new player
     // var playerShipPosition = {"s1":["B1","B2","B3"],"s2":["D1","D2","D3"]}
@@ -76,25 +76,26 @@ $(document).ready(function () {
     battleshipFB.on('child_added', function (snapshot) {
       //GET DATA
       var data = snapshot.val();
-      var username = data.name;
+      var opponentName = data.name;
+      var playerName = nameField.val()
       var otherPlayerPosition = data.position;
 
       //CREATE ELEMENTS MESSAGE & SANITIZE TEXT
-      if (username != nameField.val()) {
+      if (opponentName != playerName) {
         var onInputFeedback = opponent.onInput(otherPlayerPosition);
         if(onInputFeedback != "Sunk") {
-          show(getPlayerPosition("u1tableContainer", otherPlayerPosition), onInputFeedback)
+          show(getPlayerPosition("playerTableContainer", otherPlayerPosition), onInputFeedback)
         }
       }
       else {
-        var onInputFeedback = player.onInput(otherPlayerPosition);
+        var onInputFeedback = opponent.onInput(otherPlayerPosition);
         if(onInputFeedback != "Sunk") {
-          show(getPlayerPosition("u2tableContainer", otherPlayerPosition), onInputFeedback)
+          show(getPlayerPosition("opponenTableContainer", otherPlayerPosition), onInputFeedback)
         }
       }
 
       if(opponent.isAllShipSunk()) {
-        var message = username + " Won";
+        var message = opponentName + " Won";
         $("#player-feedback").html(message)
 
         $("#username").attr("disabled", true)
