@@ -51,6 +51,9 @@ $(document).ready(function () {
     $("#u2tableContainer").html(opponentPlayerSea)
 
     // Added new player
+    // var playerShipPosition = {"s1":["B1","B2","B3"],"s2":["D1","D2","D3"]}
+    // var opponentShipPosition = {"s1":["B1","B2","B3"],"s2":["D1","D2","D3"]}
+
     var player = new Player(generateSea(), ["B1","B2","B3"]);
     var opponent = new Player(opponentPlayerSea, ["A1", "A2", "A3"]);
 
@@ -84,7 +87,7 @@ $(document).ready(function () {
         }
       }
       else {
-        var onInputFeedback = opponent.onInput(otherPlayerPosition);
+        var onInputFeedback = player.onInput(otherPlayerPosition);
         if(onInputFeedback != "Sunk") {
           show(getPlayerPosition("u2tableContainer", otherPlayerPosition), onInputFeedback)
         }
