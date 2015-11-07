@@ -60,8 +60,13 @@ $(document).ready(function () {
             var userName = nameField.val()
             var enteredPosition = position.val()
             //SAVE DATA TO FIREBASE AND EMPTY FIELD
-            battleshipFB.push({name: userName, position: enteredPosition});
-            position.val('');
+            if (!player.isAlreadyAttempted(enteredPosition)) {
+              battleshipFB.push({name: userName, position: enteredPosition});
+              player.setAttemptedPosition(enteredPosition);
+              return position.val('');
+            }
+
+            alert("You have already entered this position");
         }
     });
 

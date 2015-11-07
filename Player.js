@@ -1,6 +1,7 @@
 var Player = function (sea, ship) {
     this.sea = sea;
     this.ship = ship;
+    this.attempted = []
 };
 
 Player.prototype = {
@@ -27,5 +28,12 @@ Player.prototype = {
     },
     isAllShipSunk: function () {
       return this.ship.length == 0;
+    },
+
+    setAttemptedPosition: function (position) {
+      this.attempted.push(position)
+    },
+    isAlreadyAttempted: function (position) {
+      return this.attempted.length != 0 && this.attempted.indexOf(position) > -1;
     }
 }
